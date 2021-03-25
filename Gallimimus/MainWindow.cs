@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Windows.Forms;
 
 namespace Gallimimus
@@ -37,27 +38,44 @@ namespace Gallimimus
             bwApplicationLoad.DoWork += new DoWorkEventHandler(
                 delegate (object o, DoWorkEventArgs args)
                 {
-                    BackgroundWorker b = o as BackgroundWorker;                   
+                    BackgroundWorker b = o as BackgroundWorker;
 
-                    ApplicationList appList = FetchApplicationList();                   
-                    foreach (ApplicationInstall app in appList.Applications)
+                    try
                     {
-                        app.Status = "Waiting...";
+                        ApplicationList appList = FetchApplicationList();
+                        foreach (ApplicationInstall app in appList.Applications)
+                        {
+                            app.Status = "Waiting...";
+                        }
+                        args.Result = appList;
                     }
-                    args.Result = appList;
+                    catch(WebException)
+                    {
+                        args.Cancel = true;
+                        return;
+                    }
                 });
 
             bwApplicationLoad.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
             delegate (object o, RunWorkerCompletedEventArgs args)
             {
-                ApplicationList appList = (ApplicationList)args.Result;
-                dtGridApps.DataSource = appList.Applications;
-                dtGridApps.Refresh();
-                lblProgress.Text = "Initialize complete!";
-                pbProgress.Style = ProgressBarStyle.Continuous;
-                pbProgress.Value = 0;
+                if (args.Cancelled)
+                {
+                    lblProgress.Text = "Cannot progress. Do you have a working internet connection?";
+                    pbProgress.Style = ProgressBarStyle.Continuous;
+                    pbProgress.Value = 0;
+                }
+                else
+                {
+                    ApplicationList appList = (ApplicationList)args.Result;
+                    dtGridApps.DataSource = appList.Applications;
+                    dtGridApps.Refresh();
+                    lblProgress.Text = "Initialize complete!";
+                    pbProgress.Style = ProgressBarStyle.Continuous;
+                    pbProgress.Value = 0;
 
-                ProcessApplication(index);
+                    ProcessApplication(index);
+                }
             });
 
             lblProgress.Text = string.Format("Initializing...");
@@ -88,7 +106,7 @@ namespace Gallimimus
                     {
                         installer = DownloadInstaller(app.DownloadLink);
                     }
-                    catch(WebException we)
+                    catch(WebException)
                     {
                         args.Cancel = true;
                         return;
@@ -213,7 +231,9 @@ namespace Gallimimus
 
         private void lblFeedback_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("mailto:suman.pro@gmail.com");
+            string mailto = string.Format("mailto:{0}?Subject={1}", Properties.Settings.Default.FeedbackEmail, Properties.Settings.Default.FeedbackSubject);
+            mailto = Uri.EscapeUriString(mailto);
+            Process.Start(new ProcessStartInfo(mailto) { UseShellExecute = true });
         }
 
         private void lblShowHide_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

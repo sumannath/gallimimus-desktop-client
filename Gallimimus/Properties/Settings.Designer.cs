@@ -31,5 +31,23 @@ namespace Gallimimus.Properties {
                 return ((int)(this["ParallelDownloads"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("suman.pro@gmail.com")]
+        public string FeedbackEmail {
+            get {
+                return ((string)(this["FeedbackEmail"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Feedback for Gallimimus desktop client")]
+        public string FeedbackSubject {
+            get {
+                return ((string)(this["FeedbackSubject"]));
+            }
+        }
     }
 }
