@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <ProjectReference Include="C:\Users\Suman\Downloads\Compressed\Newtonsoft.Json-master\Src\Newtonsoft.Json\Newtonsoft.Json.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,5 +26,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  
 
 </Project>

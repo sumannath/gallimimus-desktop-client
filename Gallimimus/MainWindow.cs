@@ -102,9 +102,11 @@ namespace Gallimimus
 
                     ApplicationInstall app = apps[index];
                     string installer = null;
+                    ApplicationVersion version = null;
                     try
                     {
-                        installer = DownloadInstaller(app.DownloadLink);
+                        version = GetPlatformVersion(apps, index);
+                        installer = DownloadInstaller(version.DownloadLink);
                     }
                     catch(WebException)
                     {
@@ -144,13 +146,14 @@ namespace Gallimimus
                     string installerPath = (string) args.Argument;
 
                     ApplicationInstall app = apps[index];
+                    ApplicationVersion version = GetPlatformVersion(apps, index);
 
                     ProcessStartInfo startInfo = new ProcessStartInfo();
                     startInfo.CreateNoWindow = false;
                     startInfo.UseShellExecute = false;
                     startInfo.FileName = installerPath;
                     startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.Arguments = apps[index].SilentInstallArgs;
+                    startInfo.Arguments = version.SilentInstallArgs;
 
                     try
                     {
@@ -196,6 +199,30 @@ namespace Gallimimus
             bwInstallerDownloader.RunWorkerAsync();
         }
 
+        private ApplicationVersion GetPlatformVersion(List<ApplicationInstall> apps, int index)
+        {
+            ApplicationInstall app = apps[index];
+            if(app.VersionCount == 1)
+            {
+                return app.Versions[0];
+            }
+            else
+            {
+                foreach(ApplicationVersion version in app.Versions)
+                {
+                    if(version.Architechture == "x64" && Environment.Is64BitOperatingSystem)
+                    {
+                        return version;
+                    }
+                    if (version.Architechture == "x86" && !Environment.Is64BitOperatingSystem)
+                    {
+                        return version;
+                    }
+                }
+            }
+            return null;
+        }
+
         private string DownloadInstaller(string installerUrl)
         {
             var result = Downloader.Download(installerUrl, Path.GetTempPath(), Properties.Settings.Default.ParallelDownloads);
@@ -220,7 +247,7 @@ namespace Gallimimus
         {
             using (var client = new WebClient())
             {
-                client.DownloadFile("http://localhost/api/v1/gals/1", "DataGal1.json");
+                client.DownloadFile("http://gallimimus.test/api/v1/gals/1", "DataGal1.json");
             }
         }
 

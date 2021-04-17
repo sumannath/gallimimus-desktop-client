@@ -7,26 +7,29 @@ namespace Gallimimus.Models
 {
     class ApplicationInstall
     {
-        [JsonProperty("applicationName")]
+        [JsonProperty("applicationId")]
+        public int Id { get; set; }
+
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("platform")]
-        public string Platform { get; set; }
+        [JsonProperty("developer")]
+        public string Developer { get; set; }
 
-        [JsonProperty("version")]
-        public string Version { get; set; }
+        [JsonProperty("icon")]
+        public string Icon { get; set; }
 
-        [JsonProperty("releaseDate")]
-        public DateTime ReleaseDate { get; set; }
+        [JsonProperty("website")]
+        public string Website { get; set; }
 
-        [JsonProperty("architechture")]
-        public string Architechture { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
-        [JsonProperty("downloadLink")]
-        public string DownloadLink { get; set; }
+        [JsonProperty("versionCount")]
+        public int VersionCount { get; set; }
 
-        [JsonProperty("silentInstallArgs")]
-        public string SilentInstallArgs { get; set; }
+        [JsonProperty("versions")]
+        public List<ApplicationVersion> Versions { get; set; }
 
         public string Status { get; set; }
     }
