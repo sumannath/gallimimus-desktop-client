@@ -31,6 +31,7 @@ namespace Gallimimus.Models
         [JsonProperty("versions")]
         public List<ApplicationVersion> Versions { get; set; }
 
+        public string Version { get; set; }
         public string Status { get; set; }
     }
 }

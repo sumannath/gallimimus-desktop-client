@@ -33,12 +33,12 @@ namespace Gallimimus
             this.lblProgress = new System.Windows.Forms.Label();
             this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.dtGridApps = new System.Windows.Forms.DataGridView();
-            this.colApplication = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Version = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmdClose = new System.Windows.Forms.Button();
             this.lblShowHide = new System.Windows.Forms.LinkLabel();
             this.lblFeedback = new System.Windows.Forms.LinkLabel();
+            this.colApplication = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Version = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dtGridApps)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,36 +84,6 @@ namespace Gallimimus
             this.dtGridApps.Size = new System.Drawing.Size(737, 152);
             this.dtGridApps.TabIndex = 2;
             // 
-            // colApplication
-            // 
-            this.colApplication.DataPropertyName = "Name";
-            this.colApplication.HeaderText = "Application";
-            this.colApplication.MinimumWidth = 6;
-            this.colApplication.Name = "colApplication";
-            this.colApplication.ReadOnly = true;
-            this.colApplication.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colApplication.Width = 300;
-            // 
-            // Version
-            // 
-            this.Version.DataPropertyName = "Version";
-            this.Version.HeaderText = "Version";
-            this.Version.MinimumWidth = 6;
-            this.Version.Name = "Version";
-            this.Version.ReadOnly = true;
-            this.Version.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Version.Width = 125;
-            // 
-            // colStatus
-            // 
-            this.colStatus.DataPropertyName = "Status";
-            this.colStatus.HeaderText = "Status";
-            this.colStatus.MinimumWidth = 6;
-            this.colStatus.Name = "colStatus";
-            this.colStatus.ReadOnly = true;
-            this.colStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colStatus.Width = 250;
-            // 
             // cmdClose
             // 
             this.cmdClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -147,6 +117,36 @@ namespace Gallimimus
             this.lblFeedback.TabStop = true;
             this.lblFeedback.Text = "Provide Feedback";
             this.lblFeedback.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblFeedback_LinkClicked);
+            // 
+            // colApplication
+            // 
+            this.colApplication.DataPropertyName = "Name";
+            this.colApplication.HeaderText = "Application";
+            this.colApplication.MinimumWidth = 6;
+            this.colApplication.Name = "colApplication";
+            this.colApplication.ReadOnly = true;
+            this.colApplication.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colApplication.Width = 300;
+            // 
+            // Version
+            // 
+            this.Version.DataPropertyName = "Version";
+            this.Version.HeaderText = "Version";
+            this.Version.MinimumWidth = 6;
+            this.Version.Name = "Version";
+            this.Version.ReadOnly = true;
+            this.Version.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Version.Width = 125;
+            // 
+            // colStatus
+            // 
+            this.colStatus.DataPropertyName = "Status";
+            this.colStatus.HeaderText = "Status";
+            this.colStatus.MinimumWidth = 6;
+            this.colStatus.Name = "colStatus";
+            this.colStatus.ReadOnly = true;
+            this.colStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colStatus.Width = 250;
             // 
             // frmMainWindow
             // 

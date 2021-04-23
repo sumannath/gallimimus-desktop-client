@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Windows.Forms;
 
 namespace Gallimimus
@@ -46,6 +45,8 @@ namespace Gallimimus
                         foreach (ApplicationInstall app in appList.Applications)
                         {
                             app.Status = "Waiting...";
+                            ApplicationVersion version = GetPlatformVersion(app);
+                            app.Version = version.Version;
                         }
                         args.Result = appList;
                     }
@@ -202,15 +203,20 @@ namespace Gallimimus
         private ApplicationVersion GetPlatformVersion(List<ApplicationInstall> apps, int index)
         {
             ApplicationInstall app = apps[index];
-            if(app.VersionCount == 1)
+            return GetPlatformVersion(app);
+        }
+
+        private ApplicationVersion GetPlatformVersion(ApplicationInstall app)
+        {
+            if (app.VersionCount == 1)
             {
                 return app.Versions[0];
             }
             else
             {
-                foreach(ApplicationVersion version in app.Versions)
+                foreach (ApplicationVersion version in app.Versions)
                 {
-                    if(version.Architechture == "x64" && Environment.Is64BitOperatingSystem)
+                    if (version.Architechture == "x64" && Environment.Is64BitOperatingSystem)
                     {
                         return version;
                     }
@@ -225,7 +231,10 @@ namespace Gallimimus
 
         private string DownloadInstaller(string installerUrl)
         {
-            var result = Downloader.Download(installerUrl, Path.GetTempPath(), Properties.Settings.Default.ParallelDownloads);
+            string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+
+            var result = Downloader.Download(installerUrl, strWorkPath, Properties.Settings.Default.ParallelDownloads);
 
             Debug.WriteLine($"Location: {result.FilePath}");
             Debug.WriteLine($"Size: {result.Size}bytes");
@@ -237,18 +246,24 @@ namespace Gallimimus
 
         private ApplicationList FetchApplicationList()
         {
-            GetApplicationJson();
-            string json = File.ReadAllText("DataGal1.json");
+            string fileName = GetApplicationJson();
+            string json = File.ReadAllText(fileName);
             ApplicationList appList = JsonConvert.DeserializeObject<ApplicationList>(json);
             return appList;
         }
 
-        private void GetApplicationJson()
+        private string GetApplicationJson()
         {
+            string json = File.ReadAllText("appsettings.json");
+            string galFileName = String.Empty;
+            AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(json);
             using (var client = new WebClient())
             {
-                client.DownloadFile("http://gallimimus.test/api/v1/gals/1", "DataGal1.json");
+                int unixTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                galFileName = String.Format("GalData{0}.json", unixTimestamp);
+                client.DownloadFile(settings.Url, galFileName);
             }
+            return galFileName;
         }
 
         private void cmdClose_Click(object sender, EventArgs e)
